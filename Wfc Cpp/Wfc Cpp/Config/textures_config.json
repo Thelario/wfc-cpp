@@ -1,0 +1,60 @@
+{
+  "textures": [
+    {
+      "asset_id": "basic-shapes",
+      "name": "basic-shapes.png",
+      "width": 64,
+      "height": 32,
+      "tile_size": 32
+    },
+    {
+      "asset_id": "ship",
+      "name": "ship.png",
+      "width": 128,
+      "height": 128,
+      "tile_size": 0
+    },
+    {
+      "asset_id": "asteroid-square-small",
+      "name": "meteor_squareSmall.png",
+      "width": 128,
+      "height": 128,
+      "tile_size": 0
+    },
+    {
+      "asset_id": "asteroid-square-large",
+      "name": "meteor_squareLarge.png",
+      "width": 128,
+      "height": 128,
+      "tile_size": 0
+    },
+    {
+      "asset_id": "asteroid-small",
+      "name": "meteor_small.png",
+      "width": 128,
+      "height": 128,
+      "tile_size": 0
+    },
+    {
+      "asset_id": "asteroid-large",
+      "name": "meteor_large.png",
+      "width": 128,
+      "height": 128,
+      "tile_size": 0
+    },
+    {
+      "asset_id": "heart-full",
+      "name": "heart_full.png",
+      "width": 640,
+      "height": 640,
+      "tile_size": 0
+    },
+    {
+      "asset_id": "health-powerup",
+      "name": "icon_plusSmall.png",
+      "width": 128,
+      "height": 128,
+      "tile_size": 0
+    }
+  ]
+}
