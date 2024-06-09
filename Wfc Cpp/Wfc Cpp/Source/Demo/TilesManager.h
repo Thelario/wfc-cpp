@@ -1,6 +1,9 @@
 #pragma once
 
 #include <string>
+#include <vector>
+
+#include "Tile.h"
 
 namespace Demo
 {
@@ -47,5 +50,6 @@ namespace Demo
 
 			TileInfo** GetTilesInfoArray();
 			int GetTilesInfoArraySize();
+			std::vector<TileInfo*> GetPossibleTiles(Tile* tile, Tile* neighbor);
 	};
 }

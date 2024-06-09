@@ -79,4 +79,40 @@ namespace Demo
 	}
 
 	int TilesManager::GetTilesInfoArraySize() { return SIZE; }
+
+	std::vector<TileInfo*> TilesManager::GetPossibleTiles(Tile* tile, Tile* neighbor)
+	{
+		std::vector<TileInfo*> possible_tiles;
+
+		for (int i = 0; i < SIZE; i++)
+		{
+			// The tile is already in the possible_tiles list
+
+			if (std::find(possible_tiles.begin(), possible_tiles.end(), tiles_info[i]) != possible_tiles.end()) {
+				continue;
+			}
+			
+			if (tile->x > neighbor->x) // If neighbor is above the tile
+			{
+				
+			}
+
+			if (tile->x < neighbor->x) // If neighbor is below the tile
+			{
+
+			}
+
+			if (tile->y < neighbor->y) // If neighbor is to the right of the tile
+			{
+
+			}
+
+			if (tile->y > neighbor->y) // If neighbor is to the left of the tile
+			{
+
+			}
+		}
+
+		return possible_tiles;
+	}
 }
