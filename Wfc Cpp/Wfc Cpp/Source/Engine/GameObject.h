@@ -53,7 +53,7 @@ namespace Satellite
 
 		virtual void Start();
 		virtual void Update();
-		void Render();
+		virtual void Render();
 		void RenderCollider();
 
 		void RestartCollisionData(GameObject* other);
