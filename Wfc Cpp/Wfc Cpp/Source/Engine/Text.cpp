@@ -21,6 +21,9 @@ namespace Satellite
 
 	void Text::Render()
 	{
+		if (enabled == false)
+			return;
+
 		SDL_Renderer* renderer = Engine::Instance()->GetRenderer();
 
 		if (font == nullptr) {

@@ -68,7 +68,13 @@ namespace Demo
 	}
 
 	std::vector<TileInfo*> Tile::GetPotentialTilesCopy() {
-		return potential_tiles;
+		std::vector<TileInfo*> copy;
+
+		for (TileInfo* tile_info : potential_tiles) {
+			copy.push_back(tile_info);
+		}
+
+		return copy;
 	}
 
 	void Tile::EmptyTile()
@@ -85,10 +91,13 @@ namespace Demo
 		int max = potential_tiles.size() - 1;
 		int rid = Engine::Instance()->GetRandom()->GenerateRandomInteger(0, max);
 		current_tile_collapsed = potential_tiles[rid];
+		potential_tiles.clear();
+		potential_tiles.push_back(current_tile_collapsed);
 		texture_id = current_tile_collapsed->texture_id;
 		tile_id = current_tile_collapsed->id;
-		scale = glm::vec2(scale.x * 0.84, scale.y * 0.84);
+		scale = glm::vec2(scale.x * 0.85, scale.y * 0.85);
 		collapsed = true;
+		potential_tiles_text->enabled = false;
 		Grid::Instance()->PropagateResult(x, y);
 	}
 
@@ -96,5 +105,16 @@ namespace Demo
 	{
 		current_tile_collapsed = tile_info;
 		collapsed = true;
+	}
+
+	void Tile::SetPotentialTiles(std::vector<TileInfo*> new_potential_tiles)
+	{
+		potential_tiles.clear();
+
+		for (TileInfo* tile_info : new_potential_tiles) {
+			potential_tiles.push_back(tile_info);
+		}
+
+		potential_tiles_text->SetText(std::to_string(potential_tiles.size()));
 	}
 }

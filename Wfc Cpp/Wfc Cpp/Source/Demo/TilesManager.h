@@ -3,10 +3,10 @@
 #include <string>
 #include <vector>
 
-#include "Tile.h"
-
 namespace Demo
 {
+	class Tile;
+
 	enum TileSideInfo {
 		WATER,  // 0
 		GRASS, // 1

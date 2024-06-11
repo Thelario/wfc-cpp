@@ -32,5 +32,6 @@ namespace Demo
 			void EmptyTile();
 			void Collapse();
 			void Collapse(TileInfo* tile_info);
+			void SetPotentialTiles(std::vector<TileInfo*> new_potential_tiles);
 	};
 }

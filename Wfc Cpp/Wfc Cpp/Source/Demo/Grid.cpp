@@ -49,7 +49,7 @@ namespace Demo
 
 			// We iterate over each adjacent tile to this one (find the neighbors and iterate over them).
 			
-			std::vector<Tile*> neighbors = FindNeighbors(x, y);
+			std::vector<Tile*> neighbors = FindNeighbors(tile->x, tile->y);
 			
 			// For each neighbor:
 			
@@ -63,7 +63,7 @@ namespace Demo
 
 				// If there aren't potential tiles, we continue.
 
-				if (tile_possible_neighbors.size() == 0) {
+				if (neighbor_potential_tiles.size() == 0) {
 					continue;
 				}
 
@@ -72,18 +72,23 @@ namespace Demo
 
 				// For each potential tile:
 
-				for (TileInfo* tile_info : neighbor->potential_tiles)
+				for (TileInfo* tile_info : neighbor_potential_tiles)
 				{
 					// If the tile is not present in the list of possible neighbors, then we remove it.
 
+					if (std::find(tile_possible_neighbors.begin(), tile_possible_neighbors.end(), tile_info) != tile_possible_neighbors.end()) {
+						new_neighbor_potential_tiles.push_back(tile_info);
+						continue;
+					}
 
+					neighbor_modified = true;
 				}
 
-				if (!neighbor_modified || grid[x][y]->collapsed) {
+				if (!neighbor_modified || neighbor->collapsed) {
 					continue;
 				}
 
-				neighbor->potential_tiles = new_neighbor_potential_tiles;
+				neighbor->SetPotentialTiles(new_neighbor_potential_tiles);
 				stack.push(neighbor);
 			}
 		}
@@ -95,25 +100,25 @@ namespace Demo
 
 		if (x == 0 && y == 0) // Left-top corner
 		{
-			neighbors.push_back(grid[1][0]);
-			neighbors.push_back(grid[0][1]);
+			neighbors.push_back(grid[1][0]); // Right tile
+			neighbors.push_back(grid[0][1]); // Below tile
 		}
-		else if (x == max_width - 1 && y == 0) // Left-down corner
+		else if (x == max_width - 1 && y == 0) // Right-top corner
 		{
-			neighbors.push_back(grid[x][1]);
-			neighbors.push_back(grid[x-1][0]);
+			neighbors.push_back(grid[x][1]); // Below tile
+			neighbors.push_back(grid[x-1][0]); // Left tile
 		}
-		else if (x == 0 && y == max_height - 1) // Right-top corner
+		else if (x == 0 && y == max_height - 1) // Left-down corner
 		{
-			neighbors.push_back(grid[0][y-1]);
-			neighbors.push_back(grid[1][y]);
+			neighbors.push_back(grid[0][y-1]); // Above tile
+			neighbors.push_back(grid[1][y]); // Right tile
 		}
 		else if (x == max_width - 1 && y == max_height - 1) // Right-down corner
 		{
 			neighbors.push_back(grid[x-1][y]);
 			neighbors.push_back(grid[x][y-1]);
 		}
-		else if (x == 0) // Upper side
+		else if (x == 0) // Left side
 		{
 			neighbors.push_back(grid[x][y-1]);
 			neighbors.push_back(grid[x][y+1]);

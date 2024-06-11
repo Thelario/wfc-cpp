@@ -9,6 +9,9 @@
 #include "../Engine/LoggerManager.h"
 #include "../Engine/json.hpp"
 
+#include "Tile.h"
+#include <unordered_set>
+
 using namespace Satellite;
 using json = nlohmann::json;
 
@@ -83,33 +86,44 @@ namespace Demo
 	std::vector<TileInfo*> TilesManager::GetPossibleTiles(Tile* tile, Tile* neighbor)
 	{
 		std::vector<TileInfo*> possible_tiles;
+		std::unordered_set<TileInfo*> possible_tiles_set;
 
-		for (int i = 0; i < SIZE; i++)
+		for (int i = 0; i < SIZE; i++) // Foreach
 		{
-			// The tile is already in the possible_tiles list
-
-			if (std::find(possible_tiles.begin(), possible_tiles.end(), tiles_info[i]) != possible_tiles.end()) {
-				continue;
-			}
-			
-			if (tile->x > neighbor->x) // If neighbor is above the tile
+			for (TileInfo* tile_info : tile->potential_tiles)
 			{
-				
-			}
-
-			if (tile->x < neighbor->x) // If neighbor is below the tile
-			{
-
-			}
-
-			if (tile->y < neighbor->y) // If neighbor is to the right of the tile
-			{
-
-			}
-
-			if (tile->y > neighbor->y) // If neighbor is to the left of the tile
-			{
-
+				if (tile->x > neighbor->x) // If neighbor is to the left
+				{
+					if (tile_info->left_side == tiles_info[i]->right_side) {
+						if (possible_tiles_set.insert(tiles_info[i]).second) {
+							possible_tiles.push_back(tiles_info[i]);
+						}
+					}
+				}
+				else if (tile->x < neighbor->x) // If neighbor is to the right
+				{
+					if (tile_info->right_side == tiles_info[i]->left_side) {
+						if (possible_tiles_set.insert(tiles_info[i]).second) {
+							possible_tiles.push_back(tiles_info[i]);
+						}
+					}
+				}
+				else if (tile->y < neighbor->y) // If neighbor below the tile
+				{
+					if (tile_info->down_side == tiles_info[i]->upper_side) {
+						if (possible_tiles_set.insert(tiles_info[i]).second) {
+							possible_tiles.push_back(tiles_info[i]);
+						}
+					}
+				}
+				else if (tile->y > neighbor->y) // If neighbor is above the tile
+				{
+					if (tile_info->upper_side == tiles_info[i]->down_side) {
+						if (possible_tiles_set.insert(tiles_info[i]).second) {
+							possible_tiles.push_back(tiles_info[i]);
+						}
+					}
+				}
 			}
 		}
 
