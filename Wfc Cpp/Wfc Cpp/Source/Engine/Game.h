@@ -18,7 +18,7 @@ namespace Satellite
 		void HandleCollisions();
 		virtual void Update();
 		virtual void Render();
-		void Destroy();
+		virtual void Destroy();
 
 		GameObject* CreateObject(GameObject* gameobject);
 		void DestroyObject(GameObject* gameobject);

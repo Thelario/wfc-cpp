@@ -25,7 +25,8 @@ namespace Demo
 				bool enabled = true, bool renderable = true, bool collidable = false, glm::vec2 size = glm::vec2(0),
 				glm::vec2 offset = glm::vec2(0), ColliderTag tag = ColliderTag::NONE, int x = -1, int y = -1);
 
-			void Update() override;
+			~Tile();
+
 			void Render() override;
 
 			std::vector<TileInfo*> GetPotentialTilesCopy();

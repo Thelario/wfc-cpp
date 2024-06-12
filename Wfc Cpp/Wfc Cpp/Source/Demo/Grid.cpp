@@ -2,9 +2,12 @@
 
 #include "../Engine/Engine.h"
 #include "../Engine/LoggerManager.h"
+#include "../Engine/InputManager.h"
 
 #include "Tile.h"
 #include <stack>
+
+using namespace Satellite;
 
 namespace Demo
 {
@@ -12,6 +15,38 @@ namespace Demo
 	{
 		static Grid* instance = new Grid();
 		return instance;
+	}
+
+	Grid::~Grid()
+	{
+		for (int x = 0; x < max_width; x++)
+		{
+			for (int y = 0; y < max_height; y++)
+			{
+				Engine::Instance()->DestroyObject(grid[x][y]);
+			}
+		}
+	}
+
+	void Grid::Update()
+	{
+		if (InputManager::GetKeyUp(KeyCode::SPACE)) {
+			collapse_grid = true;
+			time_between_collapses_counter = time_between_collapses;
+		}
+		else if (InputManager::GetKeyUp(KeyCode::ESCAPE)) {
+			ResetGrid();
+			collapse_grid = false;
+		}
+
+		if (collapse_grid == false) {
+			return;
+		}
+
+		time_between_collapses_counter -= Engine::Instance()->GetDeltaTime();
+		if (time_between_collapses_counter <= 0) {
+			SolveGrid();
+		}
 	}
 
 	void Grid::CreateGrid()
@@ -29,6 +64,72 @@ namespace Demo
 				grid[x][y] = tile;
 			}
 		}
+	}
+
+	void Grid::ResetGrid()
+	{
+		for (int x = 0; x < max_width; x++)
+		{
+			for (int y = 0; y < max_height; y++)
+			{
+				int real_x = x_offset + x * size;
+				int real_y = y_offset + y * size;
+
+				Engine::Instance()->DestroyObject(grid[x][y]);
+
+				Tile* tile = new Tile(glm::vec2(real_x, real_y), glm::vec2(2), 0, "empty-tile", 16, 16, false, 0, true, 0,
+					SDL_Color({ 255, 255, 255, 255 }), true, true, false, glm::vec2(0), glm::vec2(0), Satellite::ColliderTag::NONE, x, y);
+				Engine::Instance()->CreateObject(tile);
+				grid[x][y] = tile;
+			}
+		}
+	}
+
+	void Grid::SolveGrid()
+	{
+		Tile* tile = FindCellWithLowestEntropy();
+		if (tile == nullptr) {
+			return;
+		}
+
+		tile->Collapse();
+
+		PropagateResult(tile->x, tile->y);
+
+		time_between_collapses_counter = time_between_collapses;
+	}
+
+	Tile* Grid::FindCellWithLowestEntropy()
+	{
+		int entropy = 99999;
+
+		std::vector<Tile*> lowest_entropy_tiles;
+
+		for (int x = 0; x < max_width; x++)
+		{
+			for (int y = 0; y < max_height; y++)
+			{
+				if (grid[x][y]->collapsed)
+					continue;
+
+				if (grid[x][y]->potential_tiles.size() == entropy) {
+					lowest_entropy_tiles.push_back(grid[x][y]);
+				}
+				else if (grid[x][y]->potential_tiles.size() < entropy) {
+					lowest_entropy_tiles.clear();
+					lowest_entropy_tiles.push_back(grid[x][y]);
+					entropy = grid[x][y]->potential_tiles.size();
+				}
+			}
+		}
+
+		if (lowest_entropy_tiles.size() == 0) {
+			collapse_grid = false;
+			return nullptr;
+		}
+
+		int id = Engine::Instance()->GetRandom()->GenerateRandomInteger(0, lowest_entropy_tiles.size() - 1);
+		return lowest_entropy_tiles.at(id);
 	}
 
 	void Grid::PropagateResult(int x, int y)

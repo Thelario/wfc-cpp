@@ -25,39 +25,9 @@ namespace Demo
 		potential_tiles_text = new Text(position, glm::vec2(0.08), std::to_string(potential_tiles.size()), "arial", true);
 	}
 
-	void Tile::Update()
+	Tile::~Tile()
 	{
-		GameObject::Update();
-
-		glm::vec2 mouse_pos = InputManager::GetMousePosition();
-
-		float real_width = width * scale.x;
-		float real_height = height * scale.y;
-
-		int pos_x = (center_aligned) ? (static_cast<int>(position.x - (real_width / 2))) : (position.x);
-		int pos_y = (center_aligned) ? (static_cast<int>(position.y - (real_height / 2))) : (position.y);
-
-		int edge_offset = 2;
-
-		if ((pos_x + edge_offset < mouse_pos.x) &&
-			(pos_x - edge_offset + real_width > mouse_pos.x) &&
-			(pos_y + edge_offset < mouse_pos.y) &&
-			(pos_y - edge_offset + real_height > mouse_pos.y))
-		{
-			if (collapsed == false) {
-				tile_id = 1;
-			}
-
-			if (InputManager::GetMouseButtonDown(0) && collapsed == false) {
-				Collapse();
-			}
-			else if (InputManager::GetMouseButtonDown(1) && collapsed == true) {
-				EmptyTile();
-			}
-		}
-		else if (collapsed == false) {
-			tile_id = 0;
-		}
+		delete potential_tiles_text;
 	}
 
 	void Tile::Render()
