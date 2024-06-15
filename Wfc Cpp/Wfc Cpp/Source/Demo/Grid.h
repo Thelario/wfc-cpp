@@ -26,6 +26,8 @@ namespace Demo
 			void Update();
 
 			void CreateGrid();
+			void Solve();
+			void Reset();
 			void ResetGrid();
 			void SolveGrid();
 

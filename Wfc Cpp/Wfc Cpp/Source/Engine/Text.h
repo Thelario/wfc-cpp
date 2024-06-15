@@ -12,8 +12,6 @@ namespace Satellite
 	{
 		public:
 			bool enabled;
-
-		private:
 			glm::vec2 position;
 			glm::vec2 scale;
 			std::string text;

@@ -28,17 +28,20 @@ namespace Demo
 		}
 	}
 
+	void Grid::Solve()
+	{
+		collapse_grid = true;
+		time_between_collapses_counter = time_between_collapses;
+	}
+
+	void Grid::Reset()
+	{
+		ResetGrid();
+		collapse_grid = false;
+	}
+
 	void Grid::Update()
 	{
-		if (InputManager::GetKeyUp(KeyCode::SPACE)) {
-			collapse_grid = true;
-			time_between_collapses_counter = time_between_collapses;
-		}
-		else if (InputManager::GetKeyUp(KeyCode::ESCAPE)) {
-			ResetGrid();
-			collapse_grid = false;
-		}
-
 		if (collapse_grid == false) {
 			return;
 		}

@@ -3,6 +3,8 @@
 #include "../Engine/FontsManager.h"
 #include "../Engine/Engine.h"
 
+#include "SolveButton.h"
+#include "ResetButton.h"
 #include "TilesManager.h"
 #include "Grid.h"
 
@@ -20,10 +22,10 @@ namespace Demo
 		TilesManager::Instance()->Start();
 		Grid::Instance()->CreateGrid();
 
-		solve_button = new Button(glm::vec2(82.5, 165), glm::vec2(.75), 0, "empty-tile", 64, 32, false, 2, true, 0, SDL_Color({ 155, 155, 155, 255 }),
+		solve_button = new SolveButton(glm::vec2(82.5, 165), glm::vec2(.75), 0, "empty-tile", 64, 32, false, 2, true, 0, SDL_Color({ 155, 155, 155, 255 }),
 			true, true, false, glm::vec2(0), glm::vec2(0), ColliderTag::NONE, glm::vec2(82.5, 165), glm::vec2(.15), "Solve", true, "arial");
 
-		reset_button = new Button(glm::vec2(82.5, 200), glm::vec2(.75), 0, "empty-tile", 64, 32, false, 3, true, 0, SDL_Color({ 155, 155, 155, 255 }),
+		reset_button = new ResetButton(glm::vec2(82.5, 200), glm::vec2(.75), 0, "empty-tile", 64, 32, false, 3, true, 0, SDL_Color({ 155, 155, 155, 255 }),
 			true, true, false, glm::vec2(0), glm::vec2(0), ColliderTag::NONE, glm::vec2(82.5, 200), glm::vec2(.15), "Reset", true, "arial");
 	}
 
